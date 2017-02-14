@@ -4,7 +4,9 @@ from books_and_run.models import (
     Score,
 )
 
-
+"""
+Game endpoints
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 class GameCreateSerializer(ModelSerializer):
     class Meta:
         model = Game
@@ -32,4 +34,60 @@ class GameListSerializer(ModelSerializer):
             'players',
             'winner',
             'created_on',
+        ]
+
+
+"""
+Score endpoints
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+class ScoreCreateSerializer(ModelSerializer):
+    class Meta:
+        model = Score
+        fields = [
+            'player',
+            'game',
+            'created_on',
+            'round_one',
+            'round_two',
+            'round_three',
+            'round_four',
+            'round_five',
+            'round_six',
+            'round_seven',
+        ]
+
+
+class ScoreDetailSerializer(ModelSerializer):
+    class Meta:
+        model = Score
+        fields = [
+            'id',
+            'player',
+            'game',
+            'created_on',
+            'round_one',
+            'round_two',
+            'round_three',
+            'round_four',
+            'round_five',
+            'round_six',
+            'round_seven',
+        ]
+
+
+class ScoreListSerializer(ModelSerializer):
+    class Meta:
+        model = Score
+        fields = [
+            'id',
+            'player',
+            'game',
+            'created_on',
+            'round_one',
+            'round_two',
+            'round_three',
+            'round_four',
+            'round_five',
+            'round_six',
+            'round_seven',
         ]
