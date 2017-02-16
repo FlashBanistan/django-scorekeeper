@@ -1,4 +1,4 @@
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer, HyperlinkedIdentityField
 from books_and_run.models import (
     Game,
     Score,
@@ -27,9 +27,14 @@ class GameDetailSerializer(ModelSerializer):
 
 
 class GameListSerializer(ModelSerializer):
+    url = HyperlinkedIdentityField(
+        view_name = 'books_and_run-api:game_detail',
+        lookup_field = 'pk'
+    )
     class Meta:
         model = Game
         fields = [
+            'url',
             'id',
             'players',
             'winner',
@@ -76,9 +81,14 @@ class ScoreDetailSerializer(ModelSerializer):
 
 
 class ScoreListSerializer(ModelSerializer):
+    url = HyperlinkedIdentityField(
+        view_name = 'books_and_run-api:game_detail',
+        lookup_field = 'pk'
+    )
     class Meta:
         model = Score
         fields = [
+            'url',
             'id',
             'player',
             'game',
