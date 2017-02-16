@@ -26,6 +26,7 @@ urlpatterns = [
     url(r'^accounts/', include('allauth.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^games/', include('books_and_run.urls')),
+    url(r'^api/users/', include("accounts.api.urls", namespace='users-api')),
     url(r'^api/books_and_run/', include("books_and_run.api.urls", namespace='books_and_run-api')),
     url(r'^', views.IndexView.as_view(), name='index'),
 
