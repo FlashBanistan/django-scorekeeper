@@ -3,7 +3,8 @@ from rest_framework.generics import (
     DestroyAPIView,
     UpdateAPIView,
     ListAPIView,
-    RetrieveAPIView
+    RetrieveAPIView,
+    RetrieveUpdateAPIView,
     )
 from books_and_run.models import Game, Score
 from .serializers import (
@@ -24,12 +25,12 @@ class GameCreateAPIView(CreateAPIView):
     serializer_class = GameCreateSerializer
 
 
-class GameDetailAPIView(RetrieveAPIView):
+class GameDetailAPIView(RetrieveUpdateAPIView):
     queryset = Game.objects.all()
     serializer_class = GameDetailSerializer
 
 
-class GameUpdateAPIView(UpdateAPIView):
+class GameUpdateAPIView(RetrieveUpdateAPIView):
     queryset = Game.objects.all()
     serializer_class = GameListSerializer
 
@@ -52,12 +53,12 @@ class ScoreCreateAPIView(CreateAPIView):
     serializer_class = ScoreCreateSerializer
 
 
-class ScoreDetailAPIView(RetrieveAPIView):
+class ScoreDetailAPIView(RetrieveUpdateAPIView):
     queryset = Score.objects.all()
     serializer_class = ScoreDetailSerializer
 
 
-class ScoreUpdateAPIView(UpdateAPIView):
+class ScoreUpdateAPIView(RetrieveUpdateAPIView):
     queryset = Score.objects.all()
     serializer_class = ScoreListSerializer
 
