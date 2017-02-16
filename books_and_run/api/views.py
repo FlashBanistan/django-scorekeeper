@@ -7,6 +7,12 @@ from rest_framework.generics import (
     RetrieveUpdateAPIView,
     )
 from books_and_run.models import Game, Score
+from rest_framework.permissions import (
+    AllowAny,
+    IsAuthenticated,
+    IsAdminUser,
+    IsAuthenticatedOrReadOnly,
+)
 from .serializers import (
     GameCreateSerializer,
     GameDetailSerializer,
@@ -23,9 +29,10 @@ Game views
 class GameCreateAPIView(CreateAPIView):
     queryset = Game.objects.all()
     serializer_class = GameCreateSerializer
+    permission_classes = [IsAuthenticated]
 
 
-class GameDetailAPIView(RetrieveUpdateAPIView):
+class GameDetailAPIView(RetrieveAPIView):
     queryset = Game.objects.all()
     serializer_class = GameDetailSerializer
 
@@ -33,11 +40,13 @@ class GameDetailAPIView(RetrieveUpdateAPIView):
 class GameUpdateAPIView(RetrieveUpdateAPIView):
     queryset = Game.objects.all()
     serializer_class = GameListSerializer
+    permission_classes = [IsAuthenticated, IsAdminUser]
 
 
 class GameDeleteAPIView(DestroyAPIView):
     queryset = Game.objects.all()
     serializer_class = GameListSerializer
+    permission_classes = [IsAuthenticated, IsAdminUser]
 
 
 class GameListAPIView(ListAPIView):
@@ -53,7 +62,7 @@ class ScoreCreateAPIView(CreateAPIView):
     serializer_class = ScoreCreateSerializer
 
 
-class ScoreDetailAPIView(RetrieveUpdateAPIView):
+class ScoreDetailAPIView(RetrieveAPIView):
     queryset = Score.objects.all()
     serializer_class = ScoreDetailSerializer
 
@@ -61,11 +70,13 @@ class ScoreDetailAPIView(RetrieveUpdateAPIView):
 class ScoreUpdateAPIView(RetrieveUpdateAPIView):
     queryset = Score.objects.all()
     serializer_class = ScoreListSerializer
+    permission_classes = [IsAuthenticated, IsAdminUser]
 
 
 class ScoreDeleteAPIView(DestroyAPIView):
     queryset = Score.objects.all()
     serializer_class = ScoreListSerializer
+    permission_classes = [IsAuthenticated, IsAdminUser]
 
 
 class ScoreListAPIView(ListAPIView):
