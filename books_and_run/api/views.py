@@ -1,18 +1,3 @@
-from rest_framework.generics import (
-    CreateAPIView,
-    DestroyAPIView,
-    UpdateAPIView,
-    ListAPIView,
-    RetrieveAPIView,
-    RetrieveUpdateAPIView,
-    )
-from books_and_run.models import Game, Score
-from rest_framework.permissions import (
-    AllowAny,
-    IsAuthenticated,
-    IsAdminUser,
-    IsAuthenticatedOrReadOnly,
-)
 from .serializers import (
     GameCreateSerializer,
     GameDetailSerializer,
@@ -21,6 +6,30 @@ from .serializers import (
     ScoreDetailSerializer,
     ScoreListSerializer,
     )
+from books_and_run.models import Game, Score
+from rest_framework.generics import (
+    CreateAPIView,
+    DestroyAPIView,
+    UpdateAPIView,
+    ListAPIView,
+    RetrieveAPIView,
+    RetrieveUpdateAPIView,
+    )
+from rest_framework.filters import (
+    SearchFilter,
+    OrderingFilter,
+)
+from rest_framework.permissions import (
+    AllowAny,
+    IsAuthenticated,
+    IsAdminUser,
+    IsAuthenticatedOrReadOnly,
+)
+from rest_framework.pagination import (
+    LimitOffsetPagination,
+    PageNumberPagination,
+)
+
 
 
 """
@@ -52,6 +61,9 @@ class GameDeleteAPIView(DestroyAPIView):
 class GameListAPIView(ListAPIView):
     queryset = Game.objects.all()
     serializer_class = GameListSerializer
+    filter_backends = [SearchFilter, OrderingFilter]
+    search_fields = ['winner']
+    pagination_class = LimitOffsetPagination # PageNumberPagination
 
 
 """
@@ -82,3 +94,6 @@ class ScoreDeleteAPIView(DestroyAPIView):
 class ScoreListAPIView(ListAPIView):
     queryset = Score.objects.all()
     serializer_class = ScoreListSerializer
+    filter_backends = [SearchFilter, OrderingFilter]
+    search_fields = ['player', 'game']
+    pagination_class = LimitOffsetPagination # PageNumberPagination
