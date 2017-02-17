@@ -38,18 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.facebook',
-    'crispy_forms',
     'books_and_run',
     'rest_framework',
 ]
 
-CRISPY_TEMPLATE_PACK = 'bootstrap3'
-
-SITE_ID = 6
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -67,8 +59,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-                os.path.join(BASE_DIR, 'templates'),
-                os.path.join(BASE_DIR, 'templates', 'allauth'),
+
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -134,7 +125,6 @@ LOGIN_REDIRECT_URL = '/'
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static"),]
 
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': (
