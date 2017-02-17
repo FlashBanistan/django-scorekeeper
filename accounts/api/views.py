@@ -36,6 +36,7 @@ Account views
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 class UserCreateAPIView(CreateAPIView):
     serializer_class = UserCreateSerializer
+    permission_classes = [AllowAny]
     query_set = User.objects.all()
 
 

@@ -3,6 +3,7 @@ from books_and_run.models import (
     Game,
     Score,
 )
+from accounts.api.serializers import UserDetailSerializer
 
 """
 Game endpoints
@@ -16,7 +17,8 @@ class GameCreateSerializer(ModelSerializer):
 
 
 class GameDetailSerializer(ModelSerializer):
-    winner = SerializerMethodField()
+    winner = UserDetailSerializer(read_only=True)
+    players = UserDetailSerializer(many=True, read_only=True)
     class Meta:
         model = Game
         fields = [
@@ -25,9 +27,6 @@ class GameDetailSerializer(ModelSerializer):
             'winner',
             'created_on',
         ]
-
-    def get_winner(self, obj):
-        return str(obj.winner.username)
 
 
 class GameListSerializer(ModelSerializer):
@@ -67,7 +66,7 @@ class ScoreCreateSerializer(ModelSerializer):
 
 
 class ScoreDetailSerializer(ModelSerializer):
-    player = SerializerMethodField()
+    player = UserDetailSerializer(read_only=True)
     class Meta:
         model = Score
         fields = [
@@ -83,9 +82,6 @@ class ScoreDetailSerializer(ModelSerializer):
             'round_six',
             'round_seven',
         ]
-
-    def get_player(self, obj):
-        return str(obj.player.username)
 
 
 class ScoreListSerializer(ModelSerializer):
