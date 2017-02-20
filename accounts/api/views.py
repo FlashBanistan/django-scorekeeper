@@ -1,6 +1,8 @@
 from .serializers import (
     UserCreateSerializer,
     UserLoginSerializer,
+    FriendListCreateSerializer,
+    FriendListDetailSerializer
     )
 from django.contrib.auth import get_user_model
 from rest_framework.response import Response
@@ -28,6 +30,7 @@ from rest_framework.pagination import (
     LimitOffsetPagination,
     PageNumberPagination,
 )
+from accounts.models import FriendList
 
 User = get_user_model()
 
@@ -51,3 +54,17 @@ class UserLoginAPIView(APIView):
             new_data = serializer.data
             return Response(new_data, status=HTTP_200_OK)
         return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+
+
+"""
+FriendList views
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+class FriendListCreateAPIView(CreateAPIView):
+    queryset = FriendList.objects.all()
+    serializer_class = FriendListCreateSerializer
+    #permission_classes = [IsAuthenticated]
+
+
+class FriendListDetailAPIView(RetrieveAPIView):
+    queryset = FriendList.objects.all()
+    serializer_class = FriendListDetailSerializer
