@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'books_and_run',
+    'accounts',
     'rest_framework',
 ]
 
