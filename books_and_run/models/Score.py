@@ -15,6 +15,9 @@ class Score(models.Model):
     round_six = models.IntegerField(null=True, blank=True)
     round_seven = models.IntegerField(null=True, blank=True)
 
+    class Meta:
+        unique_together = ('player', 'game',)
+
     def __str__(self):
         return str(self.pk)
 
