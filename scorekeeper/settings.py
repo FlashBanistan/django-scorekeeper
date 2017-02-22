@@ -25,7 +25,7 @@ SECRET_KEY = 'y69gjzx@%i8q#(i1h)#sz6r)ftzj+k#ajyk*8^-j*o269e(21$'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '192.168.1.118']
+ALLOWED_HOSTS = ['localhost', '192.168.1.118', '50.160.3.217', '192.168.1.108', 'scorekeeper-api.dynu.com']
 
 
 # Application definition
