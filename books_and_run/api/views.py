@@ -67,6 +67,7 @@ class GameListAPIView(ListAPIView):
     pagination_class = LimitOffsetPagination # PageNumberPagination
 
 
+
 """
 Score views
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
