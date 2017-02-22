@@ -12,7 +12,13 @@ from .views import (
     ScoreDeleteAPIView,
     ScoreUpdateAPIView,
     ScoreListAPIView,
-    ScoreDetailAPIView
+    ScoreDetailAPIView,
+    # Statistic views
+    StatisticsCreateAPIView,
+    StatisticsDeleteAPIView,
+    StatisticsUpdateAPIView,
+    StatisticsListAPIView,
+    StatisticsDetailAPIView,
 	)
 
 urlpatterns = [
@@ -28,4 +34,11 @@ urlpatterns = [
     url(r'^scores/(?P<pk>\d+)/$', ScoreDetailAPIView.as_view(), name='score_detail'),
     url(r'^scores/(?P<pk>[\w-]+)/edit/$', ScoreUpdateAPIView.as_view(), name='score_update'),
     url(r'^scores/(?P<pk>[\w-]+)/delete/$', ScoreDeleteAPIView.as_view(), name='score_delete'),
+    # Statistics #
+    url(r'^statistics/$', StatisticsListAPIView.as_view(), name='statistics_list'),
+    url(r'^statistics/create/$', StatisticsCreateAPIView.as_view(), name='statistics_create'),
+    url(r'^statistics/(?P<pk>\d+)/$', StatisticsDetailAPIView.as_view(), name='statistics_detail'),
+    url(r'^statistics/(?P<pk>[\w-]+)/edit/$', StatisticsUpdateAPIView.as_view(), name='statistics_update'),
+    url(r'^statistics/(?P<pk>[\w-]+)/delete/$', StatisticsDeleteAPIView.as_view(), name='statistics_delete'),
+
 ]

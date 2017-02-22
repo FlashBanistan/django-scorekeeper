@@ -2,11 +2,16 @@ from .serializers import (
     GameCreateSerializer,
     GameDetailSerializer,
     GameListSerializer,
+
     ScoreCreateSerializer,
     ScoreDetailSerializer,
     ScoreListSerializer,
+
+    StatisticsCreateSerializer,
+    StatisticsDetailSerializer,
+    StatisticsListSerializer,
     )
-from books_and_run.models import Game, Score
+from books_and_run.models import Game, Score, Statistics
 from rest_framework.generics import (
     CreateAPIView,
     DestroyAPIView,
@@ -102,3 +107,40 @@ class ScoreListAPIView(ListAPIView):
     filter_backends = [SearchFilter, OrderingFilter]
     search_fields = ['player', 'game']
     pagination_class = LimitOffsetPagination # PageNumberPagination
+
+
+
+"""
+Statistic views
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+class StatisticsCreateAPIView(CreateAPIView):
+    queryset = Statistics.objects.all()
+    serializer_class = StatisticsCreateSerializer
+    #permission_classes = [IsAuthenticated]
+
+
+class StatisticsDetailAPIView(RetrieveAPIView):
+    queryset = Statistics.objects.all()
+    serializer_class = StatisticsDetailSerializer
+    #permission_classes = [IsAuthenticated]
+
+
+class StatisticsUpdateAPIView(RetrieveUpdateAPIView):
+    queryset = Statistics.objects.all()
+    serializer_class = StatisticsListSerializer
+    permission_classes = [IsAdminUser]
+
+
+class StatisticsDeleteAPIView(DestroyAPIView):
+    queryset = Statistics.objects.all()
+    serializer_class = StatisticsListSerializer
+    permission_classes = [IsAdminUser]
+
+
+class StatisticsListAPIView(ListAPIView):
+    queryset = Statistics.objects.all()
+    serializer_class = StatisticsListSerializer
+    #permission_classes = [IsAuthenticated]
+    # filter_backends = [SearchFilter, OrderingFilter]
+    # search_fields = ['player', 'game']
+    # pagination_class = LimitOffsetPagination # PageNumberPagination

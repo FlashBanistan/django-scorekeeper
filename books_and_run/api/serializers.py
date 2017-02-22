@@ -2,8 +2,11 @@ from rest_framework.serializers import ModelSerializer, HyperlinkedIdentityField
 from books_and_run.models import (
     Game,
     Score,
+    Statistics,
 )
 from accounts.api.serializers import UserDetailSerializer
+
+
 
 """
 Game endpoints
@@ -43,6 +46,7 @@ class GameListSerializer(ModelSerializer):
             'winner',
             'created_on',
         ]
+
 
 
 """
@@ -104,4 +108,53 @@ class ScoreListSerializer(ModelSerializer):
             'round_five',
             'round_six',
             'round_seven',
+        ]
+
+
+
+"""
+Statistics endpoints
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+class StatisticsCreateSerializer(ModelSerializer):
+    class Meta:
+        model = Statistics
+        fields = [
+            'user',
+            'games_won',
+            'hands_won',
+            'games_played',
+            'high_score',
+            'low_score',
+        ]
+
+
+class StatisticsDetailSerializer(ModelSerializer):
+    user = UserDetailSerializer(read_only=True)
+    class Meta:
+        model = Statistics
+        fields = [
+            'user',
+            'games_won',
+            'hands_won',
+            'games_played',
+            'high_score',
+            'low_score',
+        ]
+
+
+class StatisticsListSerializer(ModelSerializer):
+    url = HyperlinkedIdentityField(
+        view_name = 'books_and_run-api:statistics_detail',
+        lookup_field = 'pk'
+    )
+    class Meta:
+        model = Statistics
+        fields = [
+            'url',
+            'user',
+            'games_won',
+            'hands_won',
+            'games_played',
+            'high_score',
+            'low_score',
         ]
