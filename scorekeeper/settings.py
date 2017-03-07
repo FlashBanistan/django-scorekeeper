@@ -25,7 +25,9 @@ SECRET_KEY = 'y69gjzx@%i8q#(i1h)#sz6r)ftzj+k#ajyk*8^-j*o269e(21$'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '192.168.1.118']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '192.168.1.118']
+
+SITE_ID = 6
 
 
 # Application definition
@@ -38,20 +40,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.facebook',
-    'crispy_forms',
     'books_and_run',
+    'accounts',
     'rest_framework',
+    'corsheaders',
 ]
 
-CRISPY_TEMPLATE_PACK = 'bootstrap3'
-
-SITE_ID = 6
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -61,14 +58,15 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+CORS_ORIGIN_ALLOW_ALL = True
+
 ROOT_URLCONF = 'scorekeeper.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-                os.path.join(BASE_DIR, 'templates'),
-                os.path.join(BASE_DIR, 'templates', 'allauth'),
+
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -134,7 +132,6 @@ LOGIN_REDIRECT_URL = '/'
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static"),]
 
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': (
@@ -148,6 +145,12 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_PERMISSION_CLASSES': (
         # 'rest_framework.permissions.IsAuthenticatedOrReadOnly',
-        'rest_framework.permissions.IsAuthenticated',
+        #'rest_framework.permissions.IsAuthenticated',
     )
+}
+
+JWT_AUTH = {
+    'JWT_RESPONSE_PAYLOAD_HANDLER':
+        #'rest_framework_jwt.utils.jwt_response_payload_handler',
+        'scorekeeper.views.jwt_response_payload_handler',
 }

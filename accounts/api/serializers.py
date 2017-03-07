@@ -9,6 +9,7 @@ from rest_framework.serializers import (
     SerializerMethodField,
     ValidationError
 )
+from accounts.models import FriendList
 
 User = get_user_model()
 
@@ -19,6 +20,7 @@ class UserDetailSerializer(ModelSerializer):
     class Meta:
         model = User
         fields = [
+            'pk',
             'username',
             'first_name',
             'last_name',
@@ -109,3 +111,26 @@ class UserLoginSerializer(ModelSerializer):
         data['token'] = 'SOME RANDOM TOKEN'
 
         return data
+
+
+"""
+FriendList serializers
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+class FriendListCreateSerializer(ModelSerializer):
+    class Meta:
+        model = FriendList
+        fields = [
+            'user',
+            'friends',
+        ]
+
+
+class FriendListDetailSerializer(ModelSerializer):
+    user = UserDetailSerializer(read_only=True)
+    friends = UserDetailSerializer(many=True, read_only=True)
+    class Meta:
+        model = FriendList
+        fields = [
+            'user',
+            'friends',
+        ]
