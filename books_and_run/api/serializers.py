@@ -141,6 +141,17 @@ class StatisticsDetailSerializer(ModelSerializer):
             'low_score',
         ]
 
+class StatisticsUpdateSerializer(ModelSerializer):
+    class Meta:
+        model = Statistics
+        fields = [
+            'games_won',
+            'hands_won',
+            'games_played',
+            'high_score',
+            'low_score',
+        ]
+
 
 class StatisticsListSerializer(ModelSerializer):
     url = HyperlinkedIdentityField(

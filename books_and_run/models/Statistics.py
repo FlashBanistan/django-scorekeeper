@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 class Statistics(models.Model):
     # Define model fields:
-    user = models.OneToOneField(User)
+    user = models.OneToOneField(User, primary_key=True)
     games_won = models.IntegerField(null=True, blank=True)
     hands_won = models.IntegerField(null=True, blank=True)
     games_played = models.IntegerField(null=True, blank=True)

@@ -43,10 +43,12 @@ INSTALLED_APPS = [
     'books_and_run',
     'accounts',
     'rest_framework',
+    'corsheaders',
 ]
 
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -55,6 +57,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+CORS_ORIGIN_ALLOW_ALL = True
 
 ROOT_URLCONF = 'scorekeeper.urls'
 
@@ -143,4 +147,10 @@ REST_FRAMEWORK = {
         # 'rest_framework.permissions.IsAuthenticatedOrReadOnly',
         #'rest_framework.permissions.IsAuthenticated',
     )
+}
+
+JWT_AUTH = {
+    'JWT_RESPONSE_PAYLOAD_HANDLER':
+        #'rest_framework_jwt.utils.jwt_response_payload_handler',
+        'scorekeeper.views.jwt_response_payload_handler',
 }

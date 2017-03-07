@@ -10,6 +10,7 @@ from .serializers import (
     StatisticsCreateSerializer,
     StatisticsDetailSerializer,
     StatisticsListSerializer,
+    StatisticsUpdateSerializer,
     )
 from books_and_run.models import Game, Score, Statistics
 from rest_framework.generics import (
@@ -127,8 +128,8 @@ class StatisticsDetailAPIView(RetrieveAPIView):
 
 class StatisticsUpdateAPIView(RetrieveUpdateAPIView):
     queryset = Statistics.objects.all()
-    serializer_class = StatisticsListSerializer
-    permission_classes = [IsAdminUser]
+    serializer_class = StatisticsUpdateSerializer
+    # permission_classes = [IsAdminUser]
 
 
 class StatisticsDeleteAPIView(DestroyAPIView):
