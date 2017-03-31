@@ -12,3 +12,6 @@ class Statistics(models.Model):
 
     def __str__(self):
         return str(self.pk)
+
+    class Meta:
+        verbose_name_plural = "statistics"
