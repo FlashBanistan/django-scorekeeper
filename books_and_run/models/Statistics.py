@@ -13,5 +13,27 @@ class Statistics(models.Model):
     def __str__(self):
         return str(self.pk)
 
+    def increment_games_won(self):
+        self.games_won = self.games_won + 1
+        return self.games_won
+
+    def increment_hands_won(self, number_hands_won):
+        self.hands_won = self.hands_won + number_hands_won
+        return self.hands_won
+
+    def increment_games_played(self):
+        self.games_played = self.games_played + 1
+        return self.games_played
+
+    def edit_high_score(self, score):
+        if score > self.high_score:
+            self.high_score = score
+        return self.high_score
+
+    def edit_low_score(self, score):
+        if score < self.low_score:
+            self.low_score = score
+        return self.low_score
+
     class Meta:
         verbose_name_plural = "statistics"
