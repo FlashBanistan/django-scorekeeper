@@ -27,7 +27,7 @@ from rest_framework.pagination import (
     LimitOffsetPagination,
     PageNumberPagination,
 )
-
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 
 
@@ -48,8 +48,40 @@ class StatisticsDetailAPIView(RetrieveAPIView):
 
 class StatisticsUpdateAPIView(RetrieveUpdateAPIView):
     queryset = Statistics.objects.all()
-    serializer_class = StatisticsUpdateSerializer
-    # permission_classes = [IsAdminUser]
+    serializer_class = StatisticsDetailSerializer
+    authentication_classes = (JSONWebTokenAuthentication, )
+    permission_classes = [IsAuthenticated]
+
+    def put(self, request, *args, **kwargs):
+        print("")
+
+        print("self: ")
+        print(dir(self))
+        print("")
+
+        print(self.request.user.statistics)
+
+        # print("request: ")
+        # print(dir(request))
+        # print("")
+
+        # print("Request.user: ")
+        # print(request.user)
+        # print("")
+        #
+        # print("Request.auth: ")
+        # print(request.auth)
+        # print("")
+        #
+        # print("Request.authenticators: ")
+        # print(request.authenticators)
+        # print("")
+        #
+        # print("Request.data: ")
+        # print(request.data)
+        # print("")
+
+        return self.update(request, *args, **kwargs)
 
 
 class StatisticsDeleteAPIView(DestroyAPIView):
