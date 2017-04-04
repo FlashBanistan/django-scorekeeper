@@ -1,19 +1,13 @@
 from .serializers import (
-    StatisticsCreateSerializer,
-    StatisticsDetailSerializer,
-    StatisticsListSerializer,
-    StatisticsUpdateSerializer,
+    # StatisticsCreateSerializer,
+    # StatisticsDetailSerializer,
+    # StatisticsListSerializer,
+    # StatisticsUpdateSerializer,
+      StatisticsSerializer
     )
 from books_and_run.models import Statistics
-from rest_framework.generics import (
-    CreateAPIView,
-    DestroyAPIView,
-    UpdateAPIView,
-    ListAPIView,
-    RetrieveAPIView,
-    RetrieveUpdateAPIView,
-    )
 from rest_framework.filters import (
+    DjangoFilterBackend,
     SearchFilter,
     OrderingFilter,
 )
@@ -28,72 +22,43 @@ from rest_framework.pagination import (
     PageNumberPagination,
 )
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
-
+from rest_framework import viewsets
+from rest_framework.response import Response
+import django_filters
 
 
 """
 Statistic views
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-class StatisticsCreateAPIView(CreateAPIView):
+class StatisticsFilter(django_filters.FilterSet):
+
+    class Meta:
+        model = Statistics
+        fields = ('games_won', 'hands_won', 'games_played', 'high_score', 'low_score')
+
+
+class DefaultsMixin(object):
+    """Default settings for view authentication, permissions, filtering and pagination."""
+
+    # authentication_classes = JSONWebTokenAuthentication
+    #
+    # permission_classes = (
+    #     IsAuthenticated,
+    # )
+
+    paginate_by = 25
+    paginate_by_param = 'page_size'
+    max_paginate_by = 100
+    filter_backends = (
+        DjangoFilterBackend,
+        SearchFilter,
+        OrderingFilter,
+    )
+
+
+class StatisticsViewSet(DefaultsMixin, viewsets.ModelViewSet):
     queryset = Statistics.objects.all()
-    serializer_class = StatisticsCreateSerializer
-    #permission_classes = [IsAuthenticated]
-
-
-class StatisticsDetailAPIView(RetrieveAPIView):
-    queryset = Statistics.objects.all()
-    serializer_class = StatisticsDetailSerializer
-    #permission_classes = [IsAuthenticated]
-
-
-class StatisticsUpdateAPIView(RetrieveUpdateAPIView):
-    queryset = Statistics.objects.all()
-    serializer_class = StatisticsDetailSerializer
-    authentication_classes = (JSONWebTokenAuthentication, )
-    permission_classes = [IsAuthenticated]
-
-    def put(self, request, *args, **kwargs):
-        print("")
-
-        print("self: ")
-        print(dir(self))
-        print("")
-
-        print(self.request.user.statistics)
-
-        # print("request: ")
-        # print(dir(request))
-        # print("")
-
-        # print("Request.user: ")
-        # print(request.user)
-        # print("")
-        #
-        # print("Request.auth: ")
-        # print(request.auth)
-        # print("")
-        #
-        # print("Request.authenticators: ")
-        # print(request.authenticators)
-        # print("")
-        #
-        # print("Request.data: ")
-        # print(request.data)
-        # print("")
-
-        return self.update(request, *args, **kwargs)
-
-
-class StatisticsDeleteAPIView(DestroyAPIView):
-    queryset = Statistics.objects.all()
-    serializer_class = StatisticsListSerializer
-    permission_classes = [IsAdminUser]
-
-
-class StatisticsListAPIView(ListAPIView):
-    queryset = Statistics.objects.all()
-    serializer_class = StatisticsListSerializer
-    #permission_classes = [IsAuthenticated]
-    # filter_backends = [SearchFilter, OrderingFilter]
-    # search_fields = ['player', 'game']
-    # pagination_class = LimitOffsetPagination # PageNumberPagination
+    serializer_class = StatisticsSerializer
+    filter_class = StatisticsFilter
+    search_fields = ('pk', 'user')
+    ordering_fields = ('games_won', 'hands_won', 'games_played', 'high_score', 'low_score')

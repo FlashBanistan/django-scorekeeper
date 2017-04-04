@@ -16,9 +16,9 @@ Including another URLconf
 
 from django.conf.urls import url, include
 from django.contrib import admin
-from books_and_run import urls
 from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token, verify_jwt_token
 
+from books_and_run.api.urls import router
 app_name = 'scorekeeper'
 
 urlpatterns = [
@@ -27,5 +27,5 @@ urlpatterns = [
     url(r'^api/auth/refresh_token/', refresh_jwt_token),
     url(r'^api/auth/verify_token/', verify_jwt_token),
     url(r'^api/users/', include("accounts.api.urls", namespace='users-api')),
-    url(r'^api/books_and_run/', include("books_and_run.api.urls", namespace='books_and_run-api')),
+    url(r'^api/books_and_run/', include(router.urls)),
 ]

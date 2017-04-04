@@ -20,7 +20,7 @@ class UserDetailSerializer(ModelSerializer):
     class Meta:
         model = User
         fields = [
-            'pk',
+            # 'pk',
             'username',
             'first_name',
             'last_name',
