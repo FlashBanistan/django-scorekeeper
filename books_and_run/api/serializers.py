@@ -50,13 +50,13 @@ Statistics endpoints
 
 
 class StatisticsSerializer(serializers.ModelSerializer):
-    user = UserDetailSerializer(read_only=True)
+    # user = UserDetailSerializer(read_only=True)
     class Meta:
         model = Statistics
         fields = [
             'url',
-            'user',
-            'pk',
+            # 'user',
+            # 'pk',
             'games_won',
             'hands_won',
             'games_played',
@@ -81,7 +81,18 @@ class StatisticsSerializer(serializers.ModelSerializer):
         return Statistics(**validated_data)
 
     def validate(self, data):
-        print("Data: ", data)
+        print("")
+        print("dir(data): ", dir(data))
+        print("")
+
+        print("data.values", data.values)
+        print("")
+
+        print("dir(self): ", dir(self))
+        print("")
+
+        print("self.initital_data: ", self.initial_data)
+        print("")
 
 
 
