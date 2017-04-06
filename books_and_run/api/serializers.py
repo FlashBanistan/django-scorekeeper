@@ -50,7 +50,7 @@ Statistics endpoints
 
 
 class StatisticsSerializer(serializers.ModelSerializer):
-    # user = UserDetailSerializer(read_only=True)
+    # pk = serializers.IntegerField(required=False)
     class Meta:
         model = Statistics
         fields = [
@@ -63,35 +63,3 @@ class StatisticsSerializer(serializers.ModelSerializer):
             'high_score',
             'low_score',
         ]
-
-    # def create(self, validated_data):
-    #     # Check if user exists
-    #     user = None
-    #
-    #     # print('User: ', user)
-    #     # print("")
-    #     # print("dir Self: ")
-    #     # print(dir(self))
-    #     # print("")
-    #     #
-    #     # print("validated Data: ")
-    #     # print(validated_data)
-    #     # print("")
-    #
-    #     return Statistics(**validated_data)
-
-    # def validate(self, data):
-    #     print("")
-    #     print("dir(data): ", dir(data))
-    #     print("")
-    #
-    #     print("data.values", data.values)
-    #     print("")
-    #
-    #     print("dir(self): ", dir(self))
-    #     print("")
-    #
-    #     print("self.initital_data: ", self.initial_data)
-    #     print("")
-    #
-    #     return data

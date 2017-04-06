@@ -27,7 +27,7 @@ from rest_framework.response import Response
 import django_filters
 from rest_framework.decorators import detail_route
 
-
+from django.http import Http404
 """
 Statistic views
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -64,7 +64,8 @@ class StatisticsViewSet(DefaultsMixin, viewsets.ModelViewSet):
     search_fields = ('pk', 'user')
     ordering_fields = ('games_won', 'hands_won', 'games_played', 'high_score', 'low_score')
 
-    def update(self, request, pk=None):
+    def update(self, request, *args, **kwargs):
+        print(2)
         stats = self.get_object()
 
         stats.increment_games_won(request.data['is_winner'])
@@ -72,20 +73,6 @@ class StatisticsViewSet(DefaultsMixin, viewsets.ModelViewSet):
         stats.increment_games_played()
         stats.new_low_score(request.data['score'])
         stats.new_high_score(request.data['score'])
-        print("games_won: ", stats.games_won)
-        print("hands_won: ", stats.hands_won)
-        print("games_played: ", stats.games_played)
-        print("high_score: ", stats.high_score)
-        print("low_score: ", stats.low_score)
 
         serialized_stats = StatisticsSerializer(stats, context={'request': request}).data
         return Response(serialized_stats)
-
-    @detail_route(methods=['patch'])
-    def increment_games_played(self, request, pk=None):
-        stats = self.get_object()
-        stats.increment_games_played()
-        stats.save()
-        serializer = StatisticsSerializer(stats, context={'request': request}).data
-
-        return Response(serializer)
