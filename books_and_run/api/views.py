@@ -1,10 +1,4 @@
-from .serializers import (
-    # StatisticsCreateSerializer,
-    # StatisticsDetailSerializer,
-    # StatisticsListSerializer,
-    # StatisticsUpdateSerializer,
-      StatisticsSerializer
-    )
+from .serializers import StatisticsSerializer
 from books_and_run.models import Statistics
 from rest_framework.filters import (
     DjangoFilterBackend,
@@ -12,10 +6,10 @@ from rest_framework.filters import (
     OrderingFilter,
 )
 from rest_framework.permissions import (
-    AllowAny,
+    # AllowAny,
     IsAuthenticated,
-    IsAdminUser,
-    IsAuthenticatedOrReadOnly,
+    # IsAdminUser,
+    # IsAuthenticatedOrReadOnly,
 )
 from rest_framework.pagination import (
     LimitOffsetPagination,
@@ -27,7 +21,8 @@ from rest_framework.response import Response
 import django_filters
 from rest_framework.decorators import detail_route
 
-from django.http import Http404
+
+
 """
 Statistic views
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -41,11 +36,11 @@ class StatisticsFilter(django_filters.FilterSet):
 class DefaultsMixin(object):
     """Default settings for view authentication, permissions, filtering and pagination."""
 
-    # authentication_classes = JSONWebTokenAuthentication
-    #
-    # permission_classes = (
-    #     IsAuthenticated,
-    # )
+    authentication_classes = (JSONWebTokenAuthentication, )
+
+    permission_classes = (
+        IsAuthenticated,
+    )
 
     paginate_by = 25
     paginate_by_param = 'page_size'
@@ -65,7 +60,6 @@ class StatisticsViewSet(DefaultsMixin, viewsets.ModelViewSet):
     ordering_fields = ('games_won', 'hands_won', 'games_played', 'high_score', 'low_score')
 
     def update(self, request, *args, **kwargs):
-        print(2)
         stats = self.get_object()
 
         stats.increment_games_won(request.data['is_winner'])
@@ -73,6 +67,8 @@ class StatisticsViewSet(DefaultsMixin, viewsets.ModelViewSet):
         stats.increment_games_played()
         stats.new_low_score(request.data['score'])
         stats.new_high_score(request.data['score'])
+
+        stats.save()
 
         serialized_stats = StatisticsSerializer(stats, context={'request': request}).data
         return Response(serialized_stats)
