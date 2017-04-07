@@ -17,3 +17,22 @@ class StatisticsSerializer(serializers.ModelSerializer):
             'high_score',
             'low_score',
         ]
+
+    # def update(self, instance, validated_data):
+    #     instance.is_winner = ""
+    #     print("1")
+    #     return instance
+
+
+
+class StatisticsUpdateSerializer(serializers.Serializer):
+    is_winner = serializers.BooleanField()
+    num_hands_won = serializers.IntegerField()
+    score = serializers.IntegerField()
+
+    class Meta:
+        fields = [
+            'is_winner',
+            'num_hands_won',
+            'score',
+        ]

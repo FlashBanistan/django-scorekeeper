@@ -1,5 +1,5 @@
 from scorekeeper.mixins import DefaultsMixin
-from .serializers import StatisticsSerializer
+from .serializers import StatisticsSerializer, StatisticsUpdateSerializer
 from books_and_run.models import Statistics
 from rest_framework import viewsets
 from rest_framework.response import Response
@@ -58,5 +58,5 @@ class StatisticsViewSet(DefaultsMixin, viewsets.ModelViewSet):
         stats.new_high_score(request.data['score'])
         stats.save()
         serialized_stats = StatisticsSerializer(stats, context={'request': request}).data
-        
+
         return Response(serialized_stats)
