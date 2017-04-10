@@ -1,5 +1,5 @@
 from scorekeeper.mixins import DefaultsMixin
-from .serializers import StatisticsSerializer, StatisticsUpdateSerializer
+from .serializers import StatisticsSerializer
 from books_and_run.models import Statistics
 from rest_framework import viewsets
 from rest_framework.response import Response

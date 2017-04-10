@@ -2,7 +2,7 @@ from django.conf.urls import url
 from django.contrib import admin
 from .views import (
     UserCreateAPIView,
-    UserLoginAPIView,
+    # UserLoginAPIView,
     FriendListCreateAPIView,
     FriendListDetailAPIView,
 )
@@ -10,7 +10,7 @@ from .views import (
 
 urlpatterns = [
     # Accounts #
-    url(r'^login/$', UserLoginAPIView.as_view(), name='login'),
+    # url(r'^login/$', UserLoginAPIView.as_view(), name='login'),
     url(r'^register/$', UserCreateAPIView.as_view(), name='register'),
     # FriendList #
     url(r'^friendlist/create/$', FriendListCreateAPIView.as_view(), name='friendlist_create'),

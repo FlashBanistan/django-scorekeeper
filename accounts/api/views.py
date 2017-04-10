@@ -1,6 +1,6 @@
 from .serializers import (
     UserCreateSerializer,
-    UserLoginSerializer,
+    # UserLoginSerializer,
     FriendListCreateSerializer,
     FriendListDetailSerializer
     )
@@ -43,17 +43,17 @@ class UserCreateAPIView(CreateAPIView):
     query_set = User.objects.all()
 
 
-class UserLoginAPIView(APIView):
-    serializer_class = UserLoginSerializer
-    permission_classes = [AllowAny]
-
-    def post(self, request, *args, **kwargs):
-        data = request.data
-        serializer = UserLoginSerializer(data=data)
-        if serializer.is_valid(raise_exception=True):
-            new_data = serializer.data
-            return Response(new_data, status=HTTP_200_OK)
-        return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+# class UserLoginAPIView(APIView):
+#     serializer_class = UserLoginSerializer
+#     permission_classes = [AllowAny]
+#
+#     def post(self, request, *args, **kwargs):
+#         data = request.data
+#         serializer = UserLoginSerializer(data=data)
+#         if serializer.is_valid(raise_exception=True):
+#             new_data = serializer.data
+#             return Response(new_data, status=HTTP_200_OK)
+#         return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
 
 """
