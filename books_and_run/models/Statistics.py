@@ -4,9 +4,9 @@ from django.contrib.auth.models import User
 class Statistics(models.Model):
     # Define model fields:
     user = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE)
-    games_won = models.IntegerField(null=True, blank=True)
-    hands_won = models.IntegerField(null=True, blank=True)
-    games_played = models.IntegerField(null=True, blank=True)
+    games_won = models.IntegerField(default=0)
+    hands_won = models.IntegerField(default=0)
+    games_played = models.IntegerField(default=0)
     high_score = models.IntegerField(null=True, blank=True)
     low_score = models.IntegerField(null=True, blank=True)
 

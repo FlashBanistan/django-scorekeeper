@@ -4,7 +4,8 @@ from books_and_run.models import Statistics
 from rest_framework import viewsets
 from rest_framework.response import Response
 import django_filters
-from rest_framework.exceptions import ParseError
+from rest_framework.exceptions import ParseError, NotFound
+from django.contrib.auth.models import User
 
 
 
@@ -50,13 +51,83 @@ class StatisticsViewSet(DefaultsMixin, viewsets.ModelViewSet):
             raise ParseError(detail="Missing key: " + str(e))
 
         # Handle the request:
-        stats = self.get_object()
-        stats.increment_games_won(request.data['is_winner'])
-        stats.add_to_hands_won(request.data['num_hands_won'])
-        stats.increment_games_played()
-        stats.new_low_score(request.data['score'])
-        stats.new_high_score(request.data['score'])
-        stats.save()
-        serialized_stats = StatisticsSerializer(stats, context={'request': request}).data
+        # print(kwargs.get('pk'))
+        try:
+            stats = self.get_object()
+            stats.increment_games_won(request.data['is_winner'])
+            stats.add_to_hands_won(request.data['num_hands_won'])
+            stats.increment_games_played()
+            stats.new_low_score(request.data['score'])
+            stats.new_high_score(request.data['score'])
+            stats.save()
+            serialized_stats = StatisticsSerializer(stats, context={'request': request}).data
+        except:
+            try:
+                user = User.objects.get(pk=kwargs.get('pk'))
+                stats = Statistics(user=user)
+                stats.save(commit=False)
+                stats.increment_games_won(request.data['is_winner'])
+                stats.add_to_hands_won(request.data['num_hands_won'])
+                stats.increment_games_played()
+                stats.new_low_score(request.data['score'])
+                stats.new_high_score(request.data['score'])
+                stats.save()
+                serialized_stats = StatisticsSerializer(stats, context={'request': request}).data
+            except User.DoesNotExist:
+                raise
 
         return Response(serialized_stats)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# class StatisticsViewSet(DefaultsMixin, viewsets.ModelViewSet):
+#     queryset = Statistics.objects.all()
+#     serializer_class = StatisticsSerializer
+#     filter_class = StatisticsFilter
+#     search_fields = ('pk', 'user')
+#     ordering_fields = (
+#         'games_won',
+#         'hands_won',
+#         'games_played',
+#         'high_score',
+#         'low_score',
+#     )
+#
+#     """
+#     Override the http PUT action to accept and handle the following parameters:
+#         'is_winner',
+#         'num_hands_won',
+#         'score'.
+#     """
+#     def update(self, request, *args, **kwargs):
+#         # Check the request for correct data:
+#         try:
+#             request.data['is_winner']
+#             request.data['num_hands_won']
+#             request.data['score']
+#         except KeyError as e:
+#             raise ParseError(detail="Missing key: " + str(e))
+#
+#         # Handle the request:
+#         stats = self.get_object()
+#         stats.increment_games_won(request.data['is_winner'])
+#         stats.add_to_hands_won(request.data['num_hands_won'])
+#         stats.increment_games_played()
+#         stats.new_low_score(request.data['score'])
+#         stats.new_high_score(request.data['score'])
+#         stats.save()
+#         serialized_stats = StatisticsSerializer(stats, context={'request': request}).data
+#
+#         return Response(serialized_stats)
