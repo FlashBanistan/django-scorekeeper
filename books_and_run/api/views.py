@@ -51,7 +51,6 @@ class StatisticsViewSet(DefaultsMixin, viewsets.ModelViewSet):
             raise ParseError(detail="Missing key: " + str(e))
 
         # Handle the request:
-        # print(kwargs.get('pk'))
         try:
             stats = self.get_object()
             stats.increment_games_won(request.data['is_winner'])
@@ -65,16 +64,15 @@ class StatisticsViewSet(DefaultsMixin, viewsets.ModelViewSet):
             try:
                 user = User.objects.get(pk=kwargs.get('pk'))
                 stats = Statistics(user=user)
-                stats.save(commit=False)
                 stats.increment_games_won(request.data['is_winner'])
                 stats.add_to_hands_won(request.data['num_hands_won'])
                 stats.increment_games_played()
-                stats.new_low_score(request.data['score'])
-                stats.new_high_score(request.data['score'])
+                stats.low_score = request.data['score']
+                stats.high_score = request.data['score']
                 stats.save()
                 serialized_stats = StatisticsSerializer(stats, context={'request': request}).data
             except User.DoesNotExist:
-                raise
+                raise NotFound(detail="user not found")
 
         return Response(serialized_stats)
 
