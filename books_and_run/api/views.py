@@ -52,7 +52,7 @@ class StatisticsViewSet(DefaultsMixin, viewsets.ModelViewSet):
 
         # Handle the request:
         try:
-            # Grab the stats object if it exists and update it.
+            # Grab the stats record if it exists and update it:
             stats = self.get_object()
             stats.increment_games_won(request.data['is_winner'])
             stats.add_to_hands_won(request.data['num_hands_won'])
@@ -63,7 +63,7 @@ class StatisticsViewSet(DefaultsMixin, viewsets.ModelViewSet):
             serialized_stats = StatisticsSerializer(stats, context={'request': request}).data
         except:
             try:
-                # If user exists, create a stats object for them.
+                # If user exists, create a stats record for them:
                 user = User.objects.get(pk=kwargs.get('pk'))
                 stats = Statistics(user=user)
                 stats.increment_games_won(request.data['is_winner'])
