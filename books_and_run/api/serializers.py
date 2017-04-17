@@ -1,15 +1,17 @@
 from rest_framework import serializers
 from books_and_run.models import Statistics
+from accounts.api.serializers import UserDetailSerializer
 
 
 
 class StatisticsSerializer(serializers.ModelSerializer):
     # pk = serializers.IntegerField(required=False)
+    user = UserDetailSerializer()
     class Meta:
         model = Statistics
         fields = [
             'url',
-            # 'user',
+            'user',
             # 'pk',
             'games_won',
             'hands_won',
