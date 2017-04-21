@@ -30,7 +30,7 @@ from rest_framework.pagination import (
     LimitOffsetPagination,
     PageNumberPagination,
 )
-from accounts.models import FriendList
+from users.models import FriendList
 
 User = get_user_model()
 

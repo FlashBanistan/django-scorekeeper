@@ -9,7 +9,7 @@ from rest_framework.serializers import (
     SerializerMethodField,
     ValidationError
 )
-from accounts.models import FriendList
+from users.models import FriendList
 
 User = get_user_model()
 

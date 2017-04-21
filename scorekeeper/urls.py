@@ -26,6 +26,6 @@ urlpatterns = [
     url(r'^api/auth/get_token/', obtain_jwt_token),
     url(r'^api/auth/refresh_token/', refresh_jwt_token),
     url(r'^api/auth/verify_token/', verify_jwt_token),
-    url(r'^api/users/', include("accounts.api.urls", namespace='users-api')),
+    url(r'^api/users/', include("users.api.urls", namespace='users-api')),
     url(r'^api/books_and_run/', include(router.urls)),
 ]
