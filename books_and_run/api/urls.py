@@ -8,7 +8,7 @@ from .views import (
 from rest_framework.routers import DefaultRouter
 
 
-router = DefaultRouter()
-router.register(r'statistics', StatisticsViewSet)
+statistics_router = DefaultRouter()
+statistics_router.register(r'statistics', StatisticsViewSet)
 
-urlpatterns = router.urls
+urlpatterns = statistics_router.urls
