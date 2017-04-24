@@ -1,9 +1,9 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.conf import settings
 
 class Statistics(models.Model):
     # Define model fields:
-    user = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, primary_key=True, on_delete=models.CASCADE)
     games_won = models.IntegerField(default=0)
     hands_won = models.IntegerField(default=0)
     games_played = models.IntegerField(default=0)

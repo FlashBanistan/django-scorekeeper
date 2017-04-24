@@ -1,15 +1,13 @@
-from .serializers import UserCreateSerializer
 from django.contrib.auth import get_user_model
-from rest_framework.generics import CreateAPIView
+from rest_framework import viewsets
+
+from .serializers import UserDetailSerializer
+from scorekeeper.mixins import DefaultsMixin
 
 User = get_user_model()
 
 
 
-"""
-Account views
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-class UserCreateAPIView(CreateAPIView):
-    serializer_class = UserCreateSerializer
-    # permission_classes = [AllowAny]
-    query_set = User.objects.all()
+class UserViewSet(DefaultsMixin, viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserDetailSerializer
