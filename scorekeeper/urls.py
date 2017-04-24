@@ -27,5 +27,6 @@ urlpatterns = [
     url(r'^api/auth/refresh_token/', refresh_jwt_token),
     url(r'^api/auth/verify_token/', verify_jwt_token),
     url(r'^api/users/', include("users.api.urls", namespace='users-api')),
+    url(r'^api/friendlist/', include("friends.api.urls", namespace='friends-api')),
     url(r'^api/books_and_run/', include(statistics_router.urls)),
 ]
