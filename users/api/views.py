@@ -38,13 +38,12 @@ class CustomUserViewSet(DefaultsMixin, viewsets.ViewSet):
     def create(self, request):
         serializer = UserCreateSerializer(data=request.data)
         if serializer.is_valid():
-            new_user = User(username=serializer.data.get('username'), email=serializer.data.get('email'))
-            new_user.set_password(serializer.data.get('password'))
-            new_user.save()
-            serialized_user = UserDetailSerializer(new_user, context={'request': request}).data
-            return Response(serialized_user)
-
-        return Response("Couldn't process request")
+            """
+            Calling serializer.save() will go into the create method on the serializer:
+            """
+            serializer.save()
+            return Response(serializer.data, status=201)
+        return Response(serializer.errors, status=400)
 
 
     def retrieve(self, request, pk=None):
