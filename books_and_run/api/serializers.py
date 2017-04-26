@@ -1,12 +1,12 @@
 from rest_framework import serializers
 from books_and_run.models import Statistics
-from users.api.serializers import UserDetailSerializer
+from users.api.serializers import UserListSerializer
 
 
 
 class StatisticsSerializer(serializers.ModelSerializer):
     # pk = serializers.IntegerField(required=False)
-    user = UserDetailSerializer()
+    user = UserListSerializer()
     class Meta:
         model = Statistics
         fields = [

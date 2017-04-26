@@ -2,6 +2,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth import get_user_model
 from django.db.models import Q
 from rest_framework.serializers import (
+    HyperlinkedModelSerializer,
     CharField,
     EmailField,
     HyperlinkedIdentityField,
@@ -12,18 +13,23 @@ from rest_framework.serializers import (
 
 User = get_user_model()
 
-"""
-Account serializers
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+
 class UserDetailSerializer(ModelSerializer):
+    pass
+
+
+class UserListSerializer(HyperlinkedModelSerializer):
     class Meta:
         model = User
         fields = [
+            'url',
             'pk',
             'username',
             'first_name',
             'last_name',
         ]
+
 
 
 class UserCreateSerializer(ModelSerializer):
@@ -38,6 +44,12 @@ class UserCreateSerializer(ModelSerializer):
             'confirm_email',
             'password',
         ]
+
+        """
+        Fields added to 'extra_kwargs' with 'write_only': 'True' will not be returned in the response:
+        """
+        extra_kwargs = {'password': {'write_only': True}}
+
 
     def validate(self, data):
         print("Validating...")
@@ -57,17 +69,13 @@ class UserCreateSerializer(ModelSerializer):
 
 
     def create(self, validated_data):
-        seq = ('username', 'first_name', 'last_name', 'email')
-        user = validated_data.fromkeys(seq)
-        print("USER: ", user)
-        print("VALIDATED_DATA: ", validated_data)
         user = User(
             username=validated_data['username'],
             first_name=validated_data['first_name'],
             last_name=validated_data['last_name'],
             email=validated_data['email'],
         )
-        # user.set_password(validated_data['password'])
-        # user.save()
+        user.set_password(validated_data['password'])
+        user.save()
 
         return user

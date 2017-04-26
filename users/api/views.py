@@ -1,7 +1,7 @@
 # from django.contrib.auth import get_user_model
 # from rest_framework import viewsets
 #
-# from .serializers import UserDetailSerializer
+# from .serializers import UserListSerializer
 # from scorekeeper.mixins import DefaultsMixin
 #
 # User = get_user_model()
@@ -10,7 +10,7 @@
 #
 # class UserViewSet(DefaultsMixin, viewsets.ModelViewSet):
 #     queryset = User.objects.all()
-#     serializer_class = UserDetailSerializer
+#     serializer_class = UserListSerializer
 
 
 
@@ -22,7 +22,7 @@ from django.contrib.auth import get_user_model
 from rest_framework import viewsets
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
-from .serializers import UserCreateSerializer, UserDetailSerializer
+from .serializers import UserCreateSerializer, UserListSerializer
 from scorekeeper.mixins import DefaultsMixin
 
 User = get_user_model()
@@ -30,7 +30,7 @@ User = get_user_model()
 class CustomUserViewSet(DefaultsMixin, viewsets.ViewSet):
     def list(self, request):
         users = User.objects.all()
-        serialized_users = UserDetailSerializer(users, context={'request': request}, many=True).data
+        serialized_users = UserListSerializer(users, context={'request': request}, many=True).data
 
         return Response(serialized_users)
 
@@ -49,7 +49,7 @@ class CustomUserViewSet(DefaultsMixin, viewsets.ViewSet):
     def retrieve(self, request, pk=None):
         queryset = User.objects.all()
         user = get_object_or_404(queryset, pk=pk)
-        serializer = UserDetailSerializer(user)
+        serializer = UserListSerializer(user, context={'request': request})
 
         return Response(serializer.data)
 
@@ -63,4 +63,8 @@ class CustomUserViewSet(DefaultsMixin, viewsets.ViewSet):
 
 
     def destroy(self, request, pk=None):
-        pass
+        queryset = User.objects.all()
+        user = get_object_or_404(queryset, pk=pk)
+        user.delete()
+
+        return Response(status=201)
