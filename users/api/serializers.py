@@ -46,10 +46,6 @@ class UserUpdateSerializer(ModelSerializer):
             'email',
         ]
 
-    def validate(self, data):
-        print("Hello")
-        return data
-
 
 class UserCreateSerializer(ModelSerializer):
     confirm_email = EmailField(write_only=True)
