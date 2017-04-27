@@ -13,21 +13,15 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('users', '__first__'),
+        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Statistics',
+            name='FriendList',
             fields=[
                 ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, primary_key=True, serialize=False, to=settings.AUTH_USER_MODEL)),
-                ('games_won', models.IntegerField(default=0)),
-                ('hands_won', models.IntegerField(default=0)),
-                ('games_played', models.IntegerField(default=0)),
-                ('high_score', models.IntegerField(blank=True, null=True)),
-                ('low_score', models.IntegerField(blank=True, null=True)),
+                ('friends', models.ManyToManyField(related_name='friends', to=settings.AUTH_USER_MODEL)),
             ],
-            options={
-                'verbose_name_plural': 'statistics',
-            },
         ),
     ]

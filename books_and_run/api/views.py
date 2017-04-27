@@ -1,103 +1,133 @@
-from .serializers import (
-    GameCreateSerializer,
-    GameDetailSerializer,
-    GameListSerializer,
-    ScoreCreateSerializer,
-    ScoreDetailSerializer,
-    ScoreListSerializer,
+from scorekeeper.mixins import DefaultsMixin
+from .serializers import StatisticsSerializer
+from books_and_run.models import Statistics
+from rest_framework import viewsets
+from rest_framework.response import Response
+import django_filters
+from rest_framework.exceptions import ParseError, NotFound
+from django.contrib.auth.models import User
+
+
+
+class StatisticsFilter(django_filters.FilterSet):
+
+    class Meta:
+        model = Statistics
+        fields = (
+            'games_won',
+            'hands_won',
+            'games_played',
+            'high_score',
+            'low_score',
+        )
+
+
+class StatisticsViewSet(DefaultsMixin, viewsets.ModelViewSet):
+    queryset = Statistics.objects.all()
+    serializer_class = StatisticsSerializer
+    filter_class = StatisticsFilter
+    search_fields = ('pk', 'user')
+    ordering_fields = (
+        'games_won',
+        'hands_won',
+        'games_played',
+        'high_score',
+        'low_score',
     )
-from books_and_run.models import Game, Score
-from rest_framework.generics import (
-    CreateAPIView,
-    DestroyAPIView,
-    UpdateAPIView,
-    ListAPIView,
-    RetrieveAPIView,
-    RetrieveUpdateAPIView,
-    )
-from rest_framework.filters import (
-    SearchFilter,
-    OrderingFilter,
-)
-from rest_framework.permissions import (
-    AllowAny,
-    IsAuthenticated,
-    IsAdminUser,
-    IsAuthenticatedOrReadOnly,
-)
-from rest_framework.pagination import (
-    LimitOffsetPagination,
-    PageNumberPagination,
-)
+
+    """
+    Override the http PUT action to accept and handle the following parameters:
+        'is_winner',
+        'num_hands_won',
+        'score'.
+    """
+    def update(self, request, *args, **kwargs):
+        # Check the request for correct data:
+        try:
+            request.data['is_winner']
+            request.data['num_hands_won']
+            request.data['score']
+        except KeyError as e:
+            raise ParseError(detail="Missing key: " + str(e))
+
+        # Handle the request:
+        try:
+            # Grab the stats record if it exists and update it:
+            stats = self.get_object()
+            stats.increment_games_won(request.data['is_winner'])
+            stats.add_to_hands_won(request.data['num_hands_won'])
+            stats.increment_games_played()
+            stats.new_low_score(request.data['score'])
+            stats.new_high_score(request.data['score'])
+            stats.save()
+            serialized_stats = StatisticsSerializer(stats, context={'request': request}).data
+        except:
+            try:
+                # If user exists, create a stats record for them:
+                user = User.objects.get(pk=kwargs.get('pk'))
+                stats = Statistics(user=user)
+                stats.increment_games_won(request.data['is_winner'])
+                stats.add_to_hands_won(request.data['num_hands_won'])
+                stats.increment_games_played()
+                stats.low_score = request.data['score']
+                stats.high_score = request.data['score']
+                stats.save()
+                serialized_stats = StatisticsSerializer(stats, context={'request': request}).data
+            except User.DoesNotExist:
+                raise NotFound(detail="user not found")
+
+        return Response(serialized_stats)
 
 
 
-"""
-Game views
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-class GameCreateAPIView(CreateAPIView):
-    queryset = Game.objects.all()
-    serializer_class = GameCreateSerializer
-    #permission_classes = [IsAuthenticated]
 
 
-class GameDetailAPIView(RetrieveAPIView):
-    queryset = Game.objects.all()
-    serializer_class = GameDetailSerializer
 
 
-class GameUpdateAPIView(RetrieveUpdateAPIView):
-    queryset = Game.objects.all()
-    serializer_class = GameListSerializer
-    permission_classes = [IsAdminUser]
 
 
-class GameDeleteAPIView(DestroyAPIView):
-    queryset = Game.objects.all()
-    serializer_class = GameListSerializer
-    permission_classes = [IsAdminUser]
 
 
-class GameListAPIView(ListAPIView):
-    queryset = Game.objects.all()
-    serializer_class = GameListSerializer
-    #permission_classes = [IsAuthenticated]
-    filter_backends = [SearchFilter, OrderingFilter]
-    search_fields = ['winner']
-    pagination_class = LimitOffsetPagination # PageNumberPagination
 
 
-"""
-Score views
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-class ScoreCreateAPIView(CreateAPIView):
-    queryset = Score.objects.all()
-    serializer_class = ScoreCreateSerializer
-    #permission_classes = [IsAuthenticated]
 
 
-class ScoreDetailAPIView(RetrieveAPIView):
-    queryset = Score.objects.all()
-    serializer_class = ScoreDetailSerializer
-    #permission_classes = [IsAuthenticated]
-
-
-class ScoreUpdateAPIView(RetrieveUpdateAPIView):
-    queryset = Score.objects.all()
-    serializer_class = ScoreListSerializer
-    permission_classes = [IsAdminUser]
-
-
-class ScoreDeleteAPIView(DestroyAPIView):
-    queryset = Score.objects.all()
-    serializer_class = ScoreListSerializer
-    permission_classes = [IsAdminUser]
-
-
-class ScoreListAPIView(ListAPIView):
-    queryset = Score.objects.all()
-    serializer_class = ScoreListSerializer
-    #permission_classes = [IsAuthenticated]
-    filter_backends = [SearchFilter, OrderingFilter]
-    search_fields = ['player', 'game']
-    pagination_class = LimitOffsetPagination # PageNumberPagination
+# class StatisticsViewSet(DefaultsMixin, viewsets.ModelViewSet):
+#     queryset = Statistics.objects.all()
+#     serializer_class = StatisticsSerializer
+#     filter_class = StatisticsFilter
+#     search_fields = ('pk', 'user')
+#     ordering_fields = (
+#         'games_won',
+#         'hands_won',
+#         'games_played',
+#         'high_score',
+#         'low_score',
+#     )
+#
+#     """
+#     Override the http PUT action to accept and handle the following parameters:
+#         'is_winner',
+#         'num_hands_won',
+#         'score'.
+#     """
+#     def update(self, request, *args, **kwargs):
+#         # Check the request for correct data:
+#         try:
+#             request.data['is_winner']
+#             request.data['num_hands_won']
+#             request.data['score']
+#         except KeyError as e:
+#             raise ParseError(detail="Missing key: " + str(e))
+#
+#         # Handle the request:
+#         stats = self.get_object()
+#         stats.increment_games_won(request.data['is_winner'])
+#         stats.add_to_hands_won(request.data['num_hands_won'])
+#         stats.increment_games_played()
+#         stats.new_low_score(request.data['score'])
+#         stats.new_high_score(request.data['score'])
+#         stats.save()
+#         serialized_stats = StatisticsSerializer(stats, context={'request': request}).data
+#
+#         return Response(serialized_stats)

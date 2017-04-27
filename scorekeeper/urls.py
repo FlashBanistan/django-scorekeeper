@@ -16,20 +16,17 @@ Including another URLconf
 
 from django.conf.urls import url, include
 from django.contrib import admin
-from . import views
-import allauth
-from books_and_run import urls
-from rest_framework_jwt.views import obtain_jwt_token
+from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token, verify_jwt_token
 
+from books_and_run.api.urls import statistics_router
 app_name = 'scorekeeper'
 
 urlpatterns = [
-    url(r'^accounts/', include('allauth.urls')),
     url(r'^admin/', admin.site.urls),
-    url(r'^games/', include('books_and_run.urls')),
-    url(r'^api/auth/token/', obtain_jwt_token),
-    url(r'^api/users/', include("accounts.api.urls", namespace='users-api')),
-    url(r'^api/books_and_run/', include("books_and_run.api.urls", namespace='books_and_run-api')),
-    url(r'^', views.IndexView.as_view(), name='index'),
-
+    url(r'^api/auth/get_token/', obtain_jwt_token),
+    url(r'^api/auth/refresh_token/', refresh_jwt_token),
+    url(r'^api/auth/verify_token/', verify_jwt_token),
+    url(r'^api/users/', include("users.api.urls")),
+    url(r'^api/friendlist/', include("friends.api.urls", namespace='friends-api')),
+    url(r'^api/books_and_run/', include(statistics_router.urls)),
 ]
