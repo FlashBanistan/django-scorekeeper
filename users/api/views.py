@@ -22,7 +22,7 @@ from django.contrib.auth import get_user_model
 from rest_framework import viewsets
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
-from .serializers import UserCreateSerializer, UserListSerializer
+from .serializers import UserCreateSerializer, UserListSerializer, UserDetailSerializer
 from scorekeeper.mixins import DefaultsMixin
 
 User = get_user_model()
@@ -49,7 +49,7 @@ class CustomUserViewSet(DefaultsMixin, viewsets.ViewSet):
     def retrieve(self, request, pk=None):
         queryset = User.objects.all()
         user = get_object_or_404(queryset, pk=pk)
-        serializer = UserListSerializer(user, context={'request': request})
+        serializer = UserDetailSerializer(user, context={'request': request})
 
         return Response(serializer.data)
 
