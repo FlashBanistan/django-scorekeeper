@@ -37,7 +37,6 @@ class UserViewSet(DefaultsMixin, viewsets.ViewSet):
     def update(self, request, pk=None):
         queryset = User.objects.all()
         instance = queryset.get(pk=pk)
-        print(request.data)
         serializer = UserUpdateSerializer(instance, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
