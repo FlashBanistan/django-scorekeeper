@@ -36,6 +36,9 @@ class UserUpdateSerializer(ModelSerializer):
             'email',
         ]
 
+    def validate_username(self, value):
+        raise ValidationError('You cannot change your username. Please contact an administrator.')
+
 
 class UserCreateSerializer(ModelSerializer):
     confirm_email = EmailField(write_only=True)
