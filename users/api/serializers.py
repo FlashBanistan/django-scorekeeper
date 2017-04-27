@@ -15,8 +15,16 @@ User = get_user_model()
 
 
 
-class UserDetailSerializer(ModelSerializer):
-    pass
+class UserDetailSerializer(HyperlinkedModelSerializer):
+    class Meta:
+        model = User
+        fields = [
+            'url',
+            'username',
+            'first_name',
+            'last_name',
+            'email',
+        ]
 
 
 class UserListSerializer(HyperlinkedModelSerializer):
@@ -24,10 +32,7 @@ class UserListSerializer(HyperlinkedModelSerializer):
         model = User
         fields = [
             'url',
-            'pk',
             'username',
-            'first_name',
-            'last_name',
         ]
 
 
