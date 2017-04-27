@@ -36,6 +36,20 @@ class UserListSerializer(HyperlinkedModelSerializer):
         ]
 
 
+class UserUpdateSerializer(ModelSerializer):
+    class Meta:
+        model = User
+        fields = [
+            'username',
+            'first_name',
+            'last_name',
+            'email',
+        ]
+
+    def validate(self, data):
+        print("Hello")
+        return data
+
 
 class UserCreateSerializer(ModelSerializer):
     confirm_email = EmailField(write_only=True)

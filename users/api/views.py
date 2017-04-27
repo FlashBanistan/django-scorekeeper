@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 from rest_framework import viewsets
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
-from .serializers import UserCreateSerializer, UserListSerializer, UserDetailSerializer
+from .serializers import UserCreateSerializer, UserListSerializer, UserDetailSerializer, UserUpdateSerializer
 from scorekeeper.mixins import DefaultsMixin
 
 User = get_user_model()
@@ -37,8 +37,16 @@ class UserViewSet(DefaultsMixin, viewsets.ViewSet):
         return Response(serializer.data)
 
 
-    def update(self, request):
-        pass
+    def update(self, request, pk=None):
+        queryset = User.objects.all()
+        instance = queryset.get(pk=pk)
+        print(request.data)
+        serializer = UserUpdateSerializer(instance, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=201)
+
+        return Response(serializer.errors, status=400)
 
 
     def partial_update(self, request, pk=None):
