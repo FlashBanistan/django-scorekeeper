@@ -1,15 +1,5 @@
-from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth import get_user_model
-from django.db.models import Q
-from rest_framework.serializers import (
-    HyperlinkedModelSerializer,
-    CharField,
-    EmailField,
-    HyperlinkedIdentityField,
-    ModelSerializer,
-    SerializerMethodField,
-    ValidationError
-)
+from rest_framework.serializers import EmailField, HyperlinkedModelSerializer, ModelSerializer, ValidationError
 
 User = get_user_model()
 
