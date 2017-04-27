@@ -1,20 +1,3 @@
-# from django.contrib.auth import get_user_model
-# from rest_framework import viewsets
-#
-# from .serializers import UserListSerializer
-# from scorekeeper.mixins import DefaultsMixin
-#
-# User = get_user_model()
-#
-#
-#
-# class UserViewSet(DefaultsMixin, viewsets.ModelViewSet):
-#     queryset = User.objects.all()
-#     serializer_class = UserListSerializer
-
-
-
-
 """
 Everything under here is in testing:
 """
@@ -27,7 +10,7 @@ from scorekeeper.mixins import DefaultsMixin
 
 User = get_user_model()
 
-class CustomUserViewSet(DefaultsMixin, viewsets.ViewSet):
+class UserViewSet(DefaultsMixin, viewsets.ViewSet):
     def list(self, request):
         users = User.objects.all()
         serialized_users = UserListSerializer(users, context={'request': request}, many=True).data
