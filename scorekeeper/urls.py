@@ -30,3 +30,14 @@ urlpatterns = [
     url(r'^api/friendlist/', include("friends.api.urls", namespace='friends-api')),
     url(r'^api/books_and_run/', include(statistics_router.urls)),
 ]
+
+
+# from rest_framework.routers import DefaultRouter
+# from users.api.views import UserViewSet
+# from books_and_run.api.views import StatisticsViewSet
+#
+# router = DefaultRouter()
+# router.register(r'api/users', UserViewSet, base_name='user')
+# router.register(r'api/statistics', StatisticsViewSet)
+#
+# urlpatterns = urlpatterns + router.urls
