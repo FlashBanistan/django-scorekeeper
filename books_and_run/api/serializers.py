@@ -6,12 +6,12 @@ from users.api.serializers import UserDetailSerializer
 
 class StatisticsSerializer(serializers.ModelSerializer):
     # pk = serializers.IntegerField(required=False)
-    # user = UserDetailSerializer()
+    user = UserDetailSerializer()
     class Meta:
         model = Statistics
         fields = [
             # 'pk',
-            # 'user',
+            'user',
             'url',
             'games_won',
             'hands_won',
