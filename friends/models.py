@@ -8,7 +8,7 @@ from django.dispatch import receiver
 class FriendList(models.Model):
     # Define model fields:
     user = models.OneToOneField(settings.AUTH_USER_MODEL, primary_key=True, on_delete=models.CASCADE)
-    friends = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='friends')
+    friends = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='+')
 
     def __str__(self):
         return str(self.pk)
