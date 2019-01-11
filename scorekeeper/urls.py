@@ -16,9 +16,18 @@ Including another URLconf
 
 from django.conf.urls import url, include
 from django.contrib import admin
+from rest_framework.routers import DefaultRouter
 from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token, verify_jwt_token
 
-from books_and_run.urls import statistics_router
+from users.urls import user_router
+from friends.urls import friendlist_router
+from books_and_run.urls import statistics_router as books_and_run_router
+
+router = DefaultRouter()
+router.registry.extend(user_router.registry)
+router.registry.extend(friendlist_router.registry)
+router.registry.extend(books_and_run_router.registry)
+
 app_name = 'scorekeeper'
 
 
@@ -28,9 +37,7 @@ urlpatterns = [
     url(r'^api/auth/get_token/', obtain_jwt_token),
     url(r'^api/auth/refresh_token/', refresh_jwt_token),
     url(r'^api/auth/verify_token/', verify_jwt_token),
-    url(r'^api/users/', include("users.urls")),
-    url(r'^api/friendlist/', include("friends.urls")),
-    url(r'^api/books_and_run/', include(statistics_router.urls)),
+    url(r'^api/', include(router.urls)),
 ]
 
 

@@ -5,7 +5,7 @@ from .views import FriendListViewSet
 
 
 friendlist_router = DefaultRouter()
-friendlist_router.register(r'', FriendListViewSet)
+friendlist_router.register(r'friends', FriendListViewSet)
 
 urlpatterns = [
     url(r'^', include(friendlist_router.urls), name='friends'),
