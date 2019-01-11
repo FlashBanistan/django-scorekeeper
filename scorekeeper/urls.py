@@ -18,7 +18,7 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token, verify_jwt_token
 
-from books_and_run.api.urls import statistics_router
+from books_and_run.urls import statistics_router
 app_name = 'scorekeeper'
 
 
