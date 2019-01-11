@@ -10,10 +10,10 @@ from rest_framework.pagination import (
     PageNumberPagination,
 )
 from rest_framework.filters import (
-    DjangoFilterBackend,
     SearchFilter,
     OrderingFilter,
 )
+from django_filters.rest_framework import DjangoFilterBackend
 
 
 

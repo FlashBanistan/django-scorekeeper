@@ -114,4 +114,7 @@ pyvenv.cfg
 .venv
 pip-selfcheck.json
 
+# VS CODE
+.vscode/
+
 # End of https://www.gitignore.io/api/django,python,virtualenv
