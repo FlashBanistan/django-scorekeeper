@@ -4,87 +4,41 @@ from rest_framework.serializers import EmailField, HyperlinkedModelSerializer, M
 User = get_user_model()
 
 
-
-class UserDetailSerializer(HyperlinkedModelSerializer):
+class UserSerializer(ModelSerializer):
     class Meta:
         model = User
         fields = [
-            'url',
-            'username',
+            'id',
             'first_name',
             'last_name',
             'email',
-            'pk'
-        ]
-
-
-class UserListSerializer(HyperlinkedModelSerializer):
-    class Meta:
-        model = User
-        fields = [
-            'url',
-            'username',
-        ]
-
-
-class UserUpdateSerializer(ModelSerializer):
-    class Meta:
-        model = User
-        fields = [
-            'username',
-            'first_name',
-            'last_name',
-            'email',
-        ]
-
-    def validate_username(self, value):
-        raise ValidationError('You cannot change your username. Please contact an administrator.')
-
-
-class UserCreateSerializer(ModelSerializer):
-    confirm_email = EmailField(write_only=True)
-    class Meta:
-        model = User
-        fields = [
-            'username',
-            'first_name',
-            'last_name',
-            'email',
-            'confirm_email',
+            # 'date_joined',
             'password',
         ]
 
         """
         Fields added to 'extra_kwargs' with 'write_only': 'True' will not be returned in the response:
         """
-        extra_kwargs = {'password': {'write_only': True}}
+        extra_kwargs = {
+            'password': {
+                'write_only': True,
+                'required': False,
+                'style': {"input_type": "password"}
+            },
+            'first_name': {
+                'required': True,
+            }
+        }
 
-
-    def validate(self, data):
-        print("Validating...")
-        """
-        Check that the emails match:
-        """
-        if data['email'] != data['confirm_email']:
-            raise ValidationError("Emails do not match.")
-        """
-        Check if the user already exists:
-        """
-        user = User.objects.filter(email=data['email'])
-        if user.exists():
-            raise ValidationError('This email has already been registered.')
-
-        return data
-
+    def update(self, instance, validated_data):
+        instance.email = validated_data.get('email', instance.email)
+        instance.first_name = validated_data.get('first_name', instance.first_name)
+        instance.last_name = validated_data.get('last_name', instance.last_name)
+        password = validated_data.get('password', None)
+        if password:
+            instance.set_password(password)
+        instance.save()
+        return instance
 
     def create(self, validated_data):
-        user = User(
-            username=validated_data['username'],
-            first_name=validated_data['first_name'],
-            last_name=validated_data['last_name'],
-            email=validated_data['email'],
-        )
-        user.set_password(validated_data['password'])
-        user.save()
-
-        return user
+        return User.objects.create_user(**validated_data)

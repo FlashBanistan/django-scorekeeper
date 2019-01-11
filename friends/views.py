@@ -1,5 +1,5 @@
 from .serializers import FriendListDetailSerializer
-from users.serializers import UserDetailSerializer
+from users.serializers import UserSerializer
 from .models import FriendList
 from rest_framework import viewsets
 from scorekeeper.mixins import DefaultsMixin
@@ -15,6 +15,6 @@ class FriendListViewSet(DefaultsMixin, viewsets.ModelViewSet):
     @detail_route(methods=['get'])
     def get_friend(self, request, pk=None):
         friends = self.get_queryset().get(pk=pk).friends.filter(username__icontains=request.query_params.get('username'))
-        serialized_friends = UserDetailSerializer(friends, many=True, context={'request': request}).data
+        serialized_friends = UserSerializer(friends, many=True, context={'request': request}).data
 
         return Response(serialized_friends)
