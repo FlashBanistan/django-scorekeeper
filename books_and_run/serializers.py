@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from books_and_run.models import Statistics
-from users.api.serializers import UserDetailSerializer
+from users.serializers import UserDetailSerializer
 
 
 

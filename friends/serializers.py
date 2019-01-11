@@ -1,5 +1,5 @@
-from ..models import FriendList
-from users.api.serializers import UserListSerializer, UserDetailSerializer
+from .models import FriendList
+from users.serializers import UserListSerializer, UserDetailSerializer
 from rest_framework.serializers import ModelSerializer
 
 

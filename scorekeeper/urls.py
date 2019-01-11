@@ -28,8 +28,8 @@ urlpatterns = [
     url(r'^api/auth/get_token/', obtain_jwt_token),
     url(r'^api/auth/refresh_token/', refresh_jwt_token),
     url(r'^api/auth/verify_token/', verify_jwt_token),
-    url(r'^api/users/', include("users.api.urls")),
-    url(r'^api/friendlist/', include("friends.api.urls")),
+    url(r'^api/users/', include("users.urls")),
+    url(r'^api/friendlist/', include("friends.urls")),
     url(r'^api/books_and_run/', include(statistics_router.urls)),
 ]
 

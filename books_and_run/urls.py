@@ -1,9 +1,14 @@
-from django.conf.urls import url, include
-from . import views
+from django.conf.urls import url
+from django.contrib import admin
+from .views import (
+    # Statistic views
+    StatisticsViewSet,
+	)
 
-app_name = 'books_and_run'
+from rest_framework.routers import DefaultRouter
 
-urlpatterns = [
-    url(r'^', views.IndexView.as_view(), name='index'),
 
-]
+statistics_router = DefaultRouter()
+statistics_router.register(r'statistics', StatisticsViewSet)
+
+urlpatterns = statistics_router.urls
