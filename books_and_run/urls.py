@@ -1,11 +1,5 @@
-from django.conf.urls import url
-from django.contrib import admin
-from .views import (
-    # Statistic views
-    StatisticsViewSet,
-	)
-
 from rest_framework.routers import DefaultRouter
+from books_and_run.views import StatisticsViewSet
 
 
 router = DefaultRouter()
