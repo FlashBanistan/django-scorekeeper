@@ -27,27 +27,9 @@ router.registry.extend(books_and_run_router.registry)
 
 app_name = 'scorekeeper'
 
-
-
 urlpatterns = [
     path('api/auth/get_token/', obtain_jwt_token),
     path('api/auth/refresh_token/', refresh_jwt_token),
     path('api/auth/verify_token/', verify_jwt_token),
     path('api/', include(router.urls)),
 ]
-
-
-
-
-
-
-
-# from rest_framework.routers import DefaultRouter
-# from users.api.views import UserViewSet
-# from books_and_run.api.views import StatisticsViewSet
-#
-# router = DefaultRouter()
-# router.register(r'api/users', UserViewSet, base_name='user')
-# router.register(r'api/statistics', StatisticsViewSet)
-#
-# urlpatterns = urlpatterns + router.urls
