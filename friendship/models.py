@@ -50,6 +50,8 @@ class FriendRequest(models.Model):
     def reject(self):
         self.delete()
 
+        return True
+
     def save(self, *args, **kwargs):
         if self.from_user == self.to_user:
             raise ValidationError("Users cannot be friends with themselves.")
