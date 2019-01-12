@@ -14,13 +14,12 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 
-from django.conf.urls import url, include
-from django.contrib import admin
+from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token, verify_jwt_token
 
 from users.urls import router as user_router
-from books_and_run.urls import statistics_router as books_and_run_router
+from books_and_run.urls import router as books_and_run_router
 
 router = DefaultRouter()
 router.registry.extend(user_router.registry)
@@ -31,11 +30,10 @@ app_name = 'scorekeeper'
 
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'^api/auth/get_token/', obtain_jwt_token),
-    url(r'^api/auth/refresh_token/', refresh_jwt_token),
-    url(r'^api/auth/verify_token/', verify_jwt_token),
-    url(r'^api/', include(router.urls)),
+    path('api/auth/get_token/', obtain_jwt_token),
+    path('api/auth/refresh_token/', refresh_jwt_token),
+    path('api/auth/verify_token/', verify_jwt_token),
+    path('api/', include(router.urls)),
 ]
 
 
