@@ -2,8 +2,8 @@ from django.contrib.auth import get_user_model
 from rest_framework import viewsets
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
-from .serializers import UserSerializer
 from scorekeeper.mixins import DefaultsMixin
+from users.serializers import UserSerializer
 
 User = get_user_model()
 

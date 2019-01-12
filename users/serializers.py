@@ -12,6 +12,8 @@ class UserSerializer(ModelSerializer):
             'first_name',
             'last_name',
             'email',
+            'friend_set',
+            'friendship_creator_set',
             # 'date_joined',
             'password',
         ]

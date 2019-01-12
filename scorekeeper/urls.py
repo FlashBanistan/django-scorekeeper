@@ -19,13 +19,11 @@ from django.contrib import admin
 from rest_framework.routers import DefaultRouter
 from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token, verify_jwt_token
 
-from users.urls import user_router
-from friends.urls import friendlist_router
+from users.urls import router as user_router
 from books_and_run.urls import statistics_router as books_and_run_router
 
 router = DefaultRouter()
 router.registry.extend(user_router.registry)
-router.registry.extend(friendlist_router.registry)
 router.registry.extend(books_and_run_router.registry)
 
 app_name = 'scorekeeper'
