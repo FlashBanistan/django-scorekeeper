@@ -26,3 +26,4 @@ class FriendSerializer(serializers.ModelSerializer):
             'from_user',
             'created', 
         ]
+        
