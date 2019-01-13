@@ -10,11 +10,16 @@ class FriendRequestSerializer(serializers.ModelSerializer):
             'to_user',
             'date_created',
         ]
+        extra_kwargs = {
+            'from_user': {
+                'read_only': True,
+            },
+        }
 
     def create(self, validated_data):
-        from_user = validated_data.get('from_user')
+        req_user = self.context['request'].user
         to_user = validated_data.get('to_user')
-        return FriendRequest.objects.send_friend_request(from_user=from_user, to_user=to_user)
+        return FriendRequest.objects.send_friend_request(from_user=req_user, to_user=to_user)
 
 
 class FriendSerializer(serializers.ModelSerializer):
@@ -26,4 +31,3 @@ class FriendSerializer(serializers.ModelSerializer):
             'from_user',
             'created', 
         ]
-        
